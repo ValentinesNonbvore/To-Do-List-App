@@ -26,27 +26,27 @@
 
 			<!-- ALERTS -->
 			<div role="alert" class="alert alert-success mb-4 text-xl hidden" id="success">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current text-white" fill="none" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
 				</svg>
-				<span>Task successfully made!</span>
+				<span class="text-white">Task successfully made!</span>
 			</div>
 
 			<div role="alert" class="alert alert-error mb-4 text-xl hidden" id="failed">
-				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current text-white" fill="none" viewBox="0 0 24 24">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
 				</svg>
-				<span>Error! Failed making task.</span>
+				<span class="text-white">Error! Failed making task.</span>
 			</div>
 
 			<!-- FORM -->
 			<form class="flex gap-3 mb-12 h-[150px]" onsubmit="addTask(event)" id="form">
 				<div class="flex-1 flex gap-4 flex-col">
 					<div class="flex gap-4">
-						<input type="text" placeholder="Type here" class="input flex-1 input-lg border-black border-2" name="name" />
-						<input type="date" class="input input-lg border-black border-2" name="dueDate" />
+						<input type="text" placeholder="Type here" class="poppins input flex-1 input-lg border-black border-2" name="name" />
+						<input type="date" class="poppins input input-lg border-black border-2" name="dueDate" />
 					</div>
-					<textarea class="textarea flex-1 w-full textarea-xl border-black" placeholder="Bio"></textarea>
+					<textarea class="poppins textarea flex-1 w-full textarea-lg border-black" placeholder="Bio"></textarea>
 				</div>
 
 				<button class="btn btn-neutral btn-lg h-full" type="submit">
@@ -55,15 +55,19 @@
 			</form>
 
 			<!-- TASKS -->
-			<div class="w-full flex flex-col gap-4" id="taskContainer">
-				<div class="border border-2 border-black rounded-lg w-full px-[15px] py-[30px] flex gap-4">
-					<input type="checkbox" checked="checked" class="checkbox checkbox-neutral checkbox-xl" />
-					<div class="flex-1 mt-[-5px]">
-						<h1 class="gothic text-[30px] cursor-default">Calculus Homework</h1>
-						<p class="poppins text-red-500">Due 15 Aug 2025</p>
+			<div class="w-full flex flex-col gap-4" id="taskContainer"></div>
+
+			<!-- DELETE TASK -->
+			<div id="confirmModal" class="fixed inset-0 flex items-center justify-center hidden">
+				<div class="fixed inset-0 bg-black opacity-50 flex items-center justify-center z-25"></div>
+				<div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full text-center z-75 border border-black border-3">
+					<i class="fa-solid fa-trash text-5xl mt-8 mb-4"></i>
+					<h1 class="gothic text-[40px] font-semibold mb-4">Are you sure?</h1>
+					<p class="poppins mb-6 text-gray-600">Do you really want to delete this task? This action cannot be undone.</p>
+					<div class="poppins flex justify-center gap-4">
+						<button onclick="confirmDelete()" class="btn btn-neutral btn-lg">Yes, delete</button>
+						<button onclick="cancelDelete()" class="btn btn-error btn-lg text-white">Cancel</button>
 					</div>
-					<i class="fa-solid fa-pen text-2xl w-8 cursor-pointer"></i>
-					<i class="fa-solid fa-trash text-2xl w-8 cursor-pointer"></i>
 				</div>
 			</div>
 		</div>

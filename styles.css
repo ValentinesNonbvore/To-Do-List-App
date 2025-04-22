@@ -1,9 +1,14 @@
 .gothic {
-          font-family: "Special Gothic Expanded One", sans-serif;
-          font-weight: 400;
-          font-style: normal;
+	font-family: 'Special Gothic Expanded One', sans-serif;
+	font-weight: 400;
+	font-style: normal;
 }
 
 .poppins {
-          font-family: "Poppins", sans-serif;
+	font-family: 'Poppins', sans-serif;
+}
+
+*::selection {
+	color: black;
+	background-color: gold;
 }
