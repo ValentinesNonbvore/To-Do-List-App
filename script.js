@@ -34,33 +34,36 @@ async function showTasks() {
 			date = date.substring(1, 2);
 		}
 
-		const html = `<div class="overflow-hidden border border-2 border-black rounded-lg w-full px-[15px] py-[30px] flex gap-4" id="task-${task.id}">
+		const html = `<div class="overflow-hidden border border-2 border-black rounded-lg w-full px-[15px] py-[30px] flex gap-4 transition-all duration-500 ease-in-out" id="task-${task.id}">
 
 
-                                                  <div class="flex-1 flex info gap-4 mx-4 relative">
+                                                  <div class="flex-1 flex info gap-4 mx-4 relative transition-all duration-500 ease-in-out">
                                                             <input type="checkbox" onchange="toggleTask(${task.id})" class="z-10 checkbox checkbox-neutral checkbox-xl" ${task.completed ? 'checked' : ''} />
 
                                                             <div class="flex-1 mt-[-5px] z-10">
                                                                       <h1 class="gothic text-[30px] cursor-default title ${task.completed ? 'line-through' : ''}">${task.name}</h1>
-                                                                      <p class="cursor-default poppins description ${task.completed ? 'opacity-50' : ''}">${task.description}</p>
+                                                                      <p class="cursor-default poppins description ${task.completed ? 'opacity-75' : ''}">${task.description}</p>
                                                                       <p class="cursor-default poppins text-red-500">Due ${year} ${month} ${date}${suffix(date)}</p>
                                                             </div>
-                                                            
-                                                            <i class="fa-solid fa-pen text-2xl w-8 h-8 cursor-pointer" onclick="toggleEdit(${task.id})"></i>
-                                                            <i class="fa-solid fa-trash text-2xl w-8 h-8 cursor-pointer" onclick="showDeleteModal(${task.id})"></i>
 
-						<div class="rating absolute scale-[13] top-7 left-11 transform perspective-[800px] transition-transform" onclick="">
-							<input type="checkbox" name="rating-2-task-${task.id}" class="mask mask-star-2 bg-yellow-400 transform rotate-x-[50deg] rotate-y-[20deg]"  aria-label="1 star" ${task.starred ? 'checked' : ''} onclick="toggleStar(${task.id})" />
+						<!-- Pen icon -->
+						<i class="fa-solid fa-pen absolute top-[-30px] right-[50px] text-[140px] rotate-x-[35deg] rotate-y-[-20deg] cursor-pointer text-gray-800 opacity-25 transition-all duration-500 hover:text-blue-300 hover:text-[150px] hover:top-[-35px] hover:opacity-100 z-50" onclick="toggleEdit(${task.id})"></i>
+
+						<!-- Trash icon -->
+						<i class="fa-solid fa-trash absolute top-[-40px] right-[-45px] text-[180px] rotate-x-[40deg] rotate-y-[-30deg] cursor-pointer text-gray-800 z-50 transition-all duration-500 ease-in-out hover:text-red-500 hover:text-[200px] hover:top-[-50px]" onclick="showDeleteModal(${task.id})"></i>
+
+						<div class="rating absolute scale-[13] top-7 left-11 transform perspective-[800px] transition-all duration-500 ease-in-out hover:scale-[14]" onclick="">
+							<input type="checkbox" name="rating-2-task-${task.id}" class="mask mask-star-2 bg-yellow-400 transform rotate-x-[50deg] rotate-y-[20deg] transition-color duration-500 ease-in-out hover:bg-[#FFEB3B]"  aria-label="1 star" ${task.starred ? 'checked' : ''} onclick="toggleStar(${task.id})" />
 						</div>
 
                                                   </div>
 				
 
-                                                  <form class="flex flex-1 gap-3 edit mx-4 hidden" onsubmit="editTask(event)" id="form">
+                                                  <form class="flex flex-1 gap-3 edit mx-4 hidden transition-all duration-500 ease-in-out" onsubmit="editTask(event)" id="form">
                                                             <div class="flex flex-col gap-4 flex-1">
                                                                       <input type="text" value="${task.id}" class="hidden" name="id" />
                                                                       <input type="text" placeholder="Type here" class="gothic input input-xl border-black border-2 w-full" name="name" value="${task.name}" />
-                                                                      <textarea class="poppins textarea w-full textarea-lg border-black" placeholder="Bio">${task.description}</textarea>
+                                                                      <textarea class="poppins textarea w-full textarea-lg border-black" placeholder="Description">${task.description}</textarea>
                                                                       <input type="date" class="text-red-500 poppins input input-lg border-black border-2 w-full" name="dueDate" value="${task.dueDate}" />
                                                             </div>
 
@@ -148,7 +151,7 @@ function toggleTask(id) {
 	const task = tasks.find((task) => task.id == id);
 	task.completed = !task.completed;
 	title.classList.toggle('line-through');
-	description.classList.toggle('opacity-50');
+	description.classList.toggle('opacity-75');
 
 	saveTasks();
 	showTasks();
