@@ -20,26 +20,41 @@ let taskToDelete = null;
 function find(target) {
 	return document.querySelector(target);
 }
-function showTasks() {
+async function showTasks() {
 	let tasksHtml = '';
 	const taskContainer = find('#taskContainer');
+	const sortedTasks = await sortTasks(['dueDate', 'completed', 'starred']);
 
-	tasks.forEach((task) => {
+	sortedTasks.forEach((task) => {
+		const year = task.dueDate.substring(0, 4);
 		const month = months[task.dueDate.substring(5, 7)];
-		const html = `<div class="border border-2 border-black rounded-lg w-full px-[15px] py-[30px] flex gap-4" id="task-${task.id}">
+		let date = task.dueDate.substring(8, 10);
 
-                                                  <div class="flex-1 flex info gap-4 mx-4">
-                                                            <input type="checkbox" onchange="toggleTask(${task.id})" class="checkbox checkbox-neutral checkbox-xl" ${task.completed ? 'checked' : ''} />
+		if (date.substring(0, 1) === '0') {
+			date = date.substring(1, 2);
+		}
 
-                                                            <div class="flex-1 mt-[-5px]">
+		const html = `<div class="overflow-hidden border border-2 border-black rounded-lg w-full px-[15px] py-[30px] flex gap-4" id="task-${task.id}">
+
+
+                                                  <div class="flex-1 flex info gap-4 mx-4 relative">
+                                                            <input type="checkbox" onchange="toggleTask(${task.id})" class="z-10 checkbox checkbox-neutral checkbox-xl" ${task.completed ? 'checked' : ''} />
+
+                                                            <div class="flex-1 mt-[-5px] z-10">
                                                                       <h1 class="gothic text-[30px] cursor-default title ${task.completed ? 'line-through' : ''}">${task.name}</h1>
-                                                                      <p class="poppins description ${task.completed ? 'text-gray-400' : ''}">${task.description}</p>
-                                                                      <p class="poppins text-red-500">Due ${task.dueDate.substring(0, 4)} ${month} ${task.dueDate.substring(9, 10)}</p>
+                                                                      <p class="cursor-default poppins description ${task.completed ? 'opacity-50' : ''}">${task.description}</p>
+                                                                      <p class="cursor-default poppins text-red-500">Due ${year} ${month} ${date}${suffix(date)}</p>
                                                             </div>
                                                             
-                                                            <i class="fa-solid fa-pen text-2xl w-8 cursor-pointer" onclick="toggleEdit(${task.id})"></i>
-                                                            <i class="fa-solid fa-trash text-2xl w-8 cursor-pointer" onclick="showDeleteModal(${task.id})"></i>
+                                                            <i class="fa-solid fa-pen text-2xl w-8 h-8 cursor-pointer" onclick="toggleEdit(${task.id})"></i>
+                                                            <i class="fa-solid fa-trash text-2xl w-8 h-8 cursor-pointer" onclick="showDeleteModal(${task.id})"></i>
+
+						<div class="rating absolute scale-[13] top-7 left-11 transform perspective-[800px] transition-transform" onclick="">
+							<input type="checkbox" name="rating-2-task-${task.id}" class="mask mask-star-2 bg-yellow-400 transform rotate-x-[50deg] rotate-y-[20deg]"  aria-label="1 star" ${task.starred ? 'checked' : ''} onclick="toggleStar(${task.id})" />
+						</div>
+
                                                   </div>
+				
 
                                                   <form class="flex flex-1 gap-3 edit mx-4 hidden" onsubmit="editTask(event)" id="form">
                                                             <div class="flex flex-col gap-4 flex-1">
@@ -91,6 +106,7 @@ function addTask(event) {
 		dueDate,
 		description,
 		completed: false,
+		starred: false,
 	};
 
 	tasks.push(newTask);
@@ -132,9 +148,10 @@ function toggleTask(id) {
 	const task = tasks.find((task) => task.id == id);
 	task.completed = !task.completed;
 	title.classList.toggle('line-through');
-	description.classList.toggle('text-gray-400');
+	description.classList.toggle('opacity-50');
 
 	saveTasks();
+	showTasks();
 }
 function toggleEdit(id) {
 	const taskHtml = find(`#task-${id}`);
@@ -183,6 +200,44 @@ function cancelDelete() {
 }
 function saveTasks() {
 	localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+function toggleStar(id) {
+	const task = tasks.find((task) => task.id == id);
+	task.starred = !task.starred;
+
+	saveTasks();
+	showTasks();
+}
+async function sortTasks(filters) {
+	let sorted = [...tasks];
+
+	filters.forEach((filter) => {
+		sorted = sorted.sort((a, b) => {
+			switch (filter) {
+				case 'starred':
+					return Number(b.starred) - Number(a.starred);
+				case 'completed':
+					return Number(a.completed) - Number(b.completed);
+				case 'dueDate':
+					return new Date(a.dueDate) - new Date(b.dueDate);
+				default:
+					return 0;
+			}
+		});
+	});
+
+	return sorted;
+}
+function suffix(date) {
+	if (['1', '21', '31'].includes(date)) {
+		return 'st';
+	} else if (['2', '22'].includes(date)) {
+		return 'nd';
+	} else if (['3', '23'].includes(date)) {
+		return 'rd';
+	} else {
+		return 'th';
+	}
 }
 
 showTasks();

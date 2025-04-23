@@ -20,10 +20,10 @@
 	</head>
 
 	<body class="min-h-screen px-[200px] py-[100px]">
-		<div class="border border-[3px] border-black min-h-full rounded-[15px] p-[50px]">
+		<div class="border border-[3px] border-black min-h-full rounded-[15px] p-[50px] relative pt-[170px] overflow-hidden">
 			<!-- TITLE -->
-			<h1 class="text-[40px] font-bold gothic cursor-default">My Tasks</h1>
-			<p class="poppins mb-4 cursor-default" id="tasksLeft">You have 3 tasks left!</p>
+			<h1 class="text-[60px] font-bold gothic cursor-default transform rotate-x-[8deg] rotate-y-[30deg] absolute top-10 left-8">My Tasks</h1>
+			<p class="poppins mb-4 cursor-default transform rotate-x-[6deg] rotate-y-[30deg] absolute top-29 left-26" id="tasksLeft">You have 3 tasks left!</p>
 
 			<!-- ALERTS -->
 			<div role="alert" class="alert alert-success mb-4 text-xl hidden" id="success">
@@ -59,7 +59,7 @@
 			<div class="w-full flex flex-col gap-4" id="taskContainer"></div>
 
 			<!-- DELETE TASK -->
-			<div id="confirmModal" class="fixed inset-0 flex items-center justify-center hidden">
+			<div id="confirmModal" class="fixed inset-0 flex items-center justify-center hidden z-100">
 				<div class="fixed inset-0 bg-black opacity-50 flex items-center justify-center z-25"></div>
 				<div class="bg-white rounded-xl shadow-xl p-8 max-w-md w-full text-center z-75 border border-black border-3">
 					<i class="fa-solid fa-trash text-5xl mt-8 mb-4"></i>
